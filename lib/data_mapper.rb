@@ -1,4 +1,4 @@
-%w[
+%w(
   dm-core
   dm-aggregates
   dm-constraints
@@ -8,6 +8,6 @@
   dm-timestamps
   dm-validations
   dm-types
-].each do |lib|
+).each do |lib|
   require lib
 end
