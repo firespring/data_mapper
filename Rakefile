@@ -4,7 +4,7 @@ require 'pathname'
 require 'rubygems'
 require 'rake'
 
-gems = %w[
+gems = %w(
   dm-core
   dm-aggregates
   dm-constraints
@@ -14,30 +14,34 @@ gems = %w[
   dm-timestamps
   dm-validations
   dm-types
-]
+)
 
-AUTHOR           = 'Dan Kubb'
-EMAIL            = 'dan.kubb@gmail.com'
-GEM_NAME         = 'data_mapper'
-GEM_VERSION      = '1.2.0'
-GEM_DEPENDENCIES = gems.map { |gem_name| [ gem_name, "~> #{GEM_VERSION}" ] }
-GEM_CLEAN        = %w[ **/*.{gem,DS_Store} *.db doc/rdoc .config **/coverage cache ]
-GEM_EXTRAS       = { :has_rdoc => 'yard' }
+AUTHOR           = 'Dan Kubb'.freeze
+EMAIL            = 'dan.kubb@gmail.com'.freeze
+GEM_NAME         = 'data_mapper'.freeze
+GEM_VERSION      = '1.2.0'.freeze
+GEM_DEPENDENCIES = gems.map { |gem_name| [gem_name, "~> #{GEM_VERSION}"] }
+GEM_CLEAN        = %w(**/*.{gem,DS_Store} *.db doc/rdoc .config **/coverage cache).freeze
+GEM_EXTRAS       = {has_rdoc: 'yard'}.freeze
 
-PROJECT_NAME        = 'datamapper'
-PROJECT_URL         = 'http://datamapper.org'
-PROJECT_DESCRIPTION = 'Faster, Better, Simpler.'
-PROJECT_SUMMARY     = 'An Object/Relational Mapper for Ruby'
+PROJECT_NAME        = 'datamapper'.freeze
+PROJECT_URL         = 'https://datamapper.org'.freeze
+PROJECT_DESCRIPTION = 'Faster, Better, Simpler.'.freeze
+PROJECT_SUMMARY     = 'An Object/Relational Mapper for Ruby'.freeze
 
-WINDOWS = (RUBY_PLATFORM =~ /win32|mingw|bccwin|cygwin/) rescue nil
-SUDO    = WINDOWS ? '' : ('sudo' unless ENV['SUDOLESS'])
+WINDOWS = begin
+  (RUBY_PLATFORM =~ /win32|mingw|bccwin|cygwin/)
+rescue
+  nil
+end
+SUDO = WINDOWS ? '' : ('sudo' unless ENV['SUDOLESS'])
 
 desc "Install #{GEM_NAME}"
-task :install => :package do
-  sh %{#{SUDO} gem install --local pkg/#{GEM_NAME}-#{GEM_VERSION}}
+task install: :package do
+  sh %(#{SUDO} gem install --local pkg/#{GEM_NAME}-#{GEM_VERSION})
 end
 
-task(:spec) {}  # this gem does not provide any specs
+task(:spec) {} # this gem does not provide any specs
 
 ## HOE TASKS
 
@@ -45,16 +49,16 @@ require 'hoe'
 
 @config_file = '~/.rubyforge/user-config.yml'
 @config = nil
-RUBYFORGE_USERNAME = 'unknown'
+RUBYFORGE_USERNAME = 'unknown'.freeze
 def rubyforge_username
   unless @config
     begin
-      @config = YAML.load(File.read(File.expand_path(@config_file)))
+      @config = YAML.safe_load_file(File.expand_path(@config_file))
     rescue
-      puts <<-EOS
-ERROR: No rubyforge config file found: #{@config_file}
-Run 'rubyforge setup' to prepare your env for access to Rubyforge
- - See http://newgem.rubyforge.org/rubyforge.html for more details
+      puts <<~EOS
+        ERROR: No rubyforge config file found: #{@config_file}
+        Run 'rubyforge setup' to prepare your env for access to Rubyforge
+         - See http://newgem.rubyforge.org/rubyforge.html for more details
       EOS
       exit
     end
@@ -62,8 +66,7 @@ Run 'rubyforge setup' to prepare your env for access to Rubyforge
   RUBYFORGE_USERNAME.replace @config['username']
 end
 
-hoe = Hoe.new(GEM_NAME, GEM_VERSION) do |p|
-
+Hoe.new(GEM_NAME, GEM_VERSION) do |p|
   p.developer(AUTHOR, EMAIL)
 
   p.description = PROJECT_DESCRIPTION
@@ -78,5 +81,4 @@ hoe = Hoe.new(GEM_NAME, GEM_VERSION) do |p|
   GEM_DEPENDENCIES.each do |dep|
     p.extra_deps << dep
   end
-
 end
