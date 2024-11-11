@@ -1,13 +1,13 @@
 %w(
-  sbf-dm-core
-  sbf-dm-aggregates
-  sbf-dm-constraints
-  sbf-dm-migrations
-  sbf-dm-transactions
-  sbf-dm-serializer
-  sbf-dm-timestamps
-  sbf-dm-validations
-  sbf-dm-types
+  dm-core
+  dm-aggregates
+  dm-constraints
+  dm-migrations
+  dm-transactions
+  dm-serializer
+  dm-timestamps
+  dm-validations
+  dm-types
 ).each do |lib|
   require lib
 end
